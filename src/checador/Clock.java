@@ -17,8 +17,7 @@ public class Clock extends Thread{
 	}
 	
 	public void run() {
-		boolean life = true;
-		while(life) {
+		while(true) {
 			for (seconds = 0; seconds<60; seconds++) {
 				try {
 					sleep(1000);

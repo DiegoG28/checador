@@ -16,8 +16,7 @@ public class Checker extends Thread {
 		String num;
 		Scanner scanner = new Scanner(System.in);
 		String readString = scanner.nextLine();
-		boolean life = true;
-		while (life) {
+		while (true) {
 			if (readString.equals("")) {
 				keyPressed = true;
 				System.out.println("\u001B[34m" + "Ingresa tu número de empleado" + "\u001B[0m");
