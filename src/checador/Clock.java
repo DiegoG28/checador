@@ -1,11 +1,14 @@
 package checador;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Clock extends Thread{
 	int hours;
 	int minutes;
 	int seconds;
+	String checkTitle;
+	String checkTime;
 	ArrayList<String> employeeTime = new ArrayList<String>();
 	Checker checker;
 	
@@ -23,15 +26,13 @@ public class Clock extends Thread{
 				try {
 					sleep(1000);
 					if(checker.numberTyped && !checker.isExit) {
-						System.out.println("\u001B[32m" + "Se ha registrado su entrada");
-						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-					    System.out.println("" + "\u001B[0m");
+						checkTitle = "\u001B[32m" + "Se ha registrado su entrada";
+						checkTime = String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
 						checker.numberTyped = false;
 					}
 					if(checker.numberTyped && checker.isExit) {
-						System.out.println("\u001B[33m" + "Se ha registrado su salida");
-						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-					    System.out.println("" + "\u001B[0m");
+						checkTitle = "\u001B[33m" + "Se ha registrado su salida";
+						checkTime = String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
 						checker.numberTyped = false;
 						checker.isExit = false;
 					}
@@ -46,6 +47,17 @@ public class Clock extends Thread{
 							chron.stop();
 						}
 					}else {
+				        try {
+							new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				        if(checkTitle != null) {
+				        	System.out.println(checkTitle);
+				            System.out.println(checkTime);
+				        	System.out.println("" + "\u001B[0m");
+				        }
 						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
 					}
 					if (seconds>=59) {
