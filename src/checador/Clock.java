@@ -6,15 +6,13 @@ public class Clock extends Thread{
 	int hours;
 	int minutes;
 	int seconds;
-	Join join;
 	ArrayList<String> employeeTime = new ArrayList<String>();
-	Employee employee;
+	Checker checker;
 	
-	public Clock (int h, int m, Join join, Employee employee) {
+	public Clock (int h, int m, Checker checker) {
 		this.hours = h;
 		this.minutes = m;
-		this.join = join;
-		this.employee = employee;
+		this.checker = checker;
 		
 	}
 	
@@ -23,34 +21,33 @@ public class Clock extends Thread{
 		while(life) {
 			for (seconds = 0; seconds<60; seconds++) {
 				try {
-					if(join.numberTyped && !join.isExit) {
+					sleep(1000);
+					if(checker.numberTyped && !checker.isExit) {
 						System.out.println("\u001B[32m" + "Se ha registrado su entrada");
 						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
 					    System.out.println("" + "\u001B[0m");
-						join.numberTyped = false;
+						checker.numberTyped = false;
 					}
-					if(join.numberTyped && join.isExit) {
+					if(checker.numberTyped && checker.isExit) {
 						System.out.println("\u001B[33m" + "Se ha registrado su salida");
 						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
 					    System.out.println("" + "\u001B[0m");
-						join.numberTyped = false;
-						join.isExit = false;
+						checker.numberTyped = false;
+						checker.isExit = false;
 					}
-					if(join.keyPressed) {
-						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-					}
-					if(!join.keyPressed) {
-						synchronized(employee.employeeCode) {
+					if(checker.keyPressed) {
+						synchronized(checker.employeeCode) {
 							Chronometer chron = new Chronometer();
 							chron.start();
-							employee.employeeCode.wait();
+							checker.employeeCode.wait();
 							hours = hours + chron.getHours();
 							minutes = minutes + chron.getMinutes();
 							seconds = seconds + chron.getSeconds();
 							chron.stop();
 						}
+					}else {
+						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
 					}
-					sleep(1000);
 					if (seconds>=59) {
 						seconds = seconds % 60;
 						minutes++;
