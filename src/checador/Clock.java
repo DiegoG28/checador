@@ -50,9 +50,9 @@ public class Clock extends Thread{
 							chron.stop();
 						}
 					}
-					
 					sleep(1000);
-					if (seconds==59) {
+					if (seconds>=59) {
+						seconds = seconds % 60;
 						minutes++;
 						if (minutes==60) {
 							minutes = 0;
