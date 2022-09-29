@@ -16,6 +16,7 @@ public class Clock extends Thread{
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void run() {
 		while(true) {
 			for (seconds = 0; seconds<60; seconds++) {
