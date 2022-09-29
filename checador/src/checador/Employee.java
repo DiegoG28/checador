@@ -21,7 +21,7 @@ public class Employee extends Thread {
 		boolean life = true;
 		while (life) {
 			if (readString.equals("")) {
-				join.allowPrint = false;
+				join.keyPressed = false;
 				System.out.println("\u001B[34m" + "Ingresa tu número de empleado" + "\u001B[0m");
 				num = scanner.nextLine();
 				for (int i = 0; i < employeeCode.size(); i++) {
@@ -34,7 +34,10 @@ public class Employee extends Thread {
 					employeeCode.add(num);
 				}
 				join.numberTyped = true;
-				join.allowPrint = true;
+				join.keyPressed = true;
+				synchronized(employeeCode) {
+					employeeCode.notify();
+				}
 			}
 			if (scanner.hasNextLine())
 				readString = scanner.nextLine();

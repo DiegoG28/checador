@@ -8,11 +8,14 @@ public class Clock extends Thread{
 	int seconds;
 	Join join;
 	ArrayList<String> employeeTime = new ArrayList<String>();
+	Employee employee;
 	
-	public Clock (int h, int m, Join join) {
+	public Clock (int h, int m, Join join, Employee employee) {
 		this.hours = h;
 		this.minutes = m;
 		this.join = join;
+		this.employee = employee;
+		
 	}
 	
 	public void run() {
@@ -33,9 +36,20 @@ public class Clock extends Thread{
 						join.numberTyped = false;
 						join.isExit = false;
 					}
-					if(join.allowPrint) {
+					if(join.keyPressed) {
 						System.out.println(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-					} 
+					}
+					if(!join.keyPressed) {
+						synchronized(employee.employeeCode) {
+							Chronometer chron = new Chronometer();
+							chron.start();
+							employee.employeeCode.wait();
+							hours = hours + chron.getHours();
+							minutes = minutes + chron.getMinutes();
+							seconds = seconds + chron.getSeconds();
+							chron.stop();
+						}
+					}
 					
 					sleep(1000);
 					if (seconds==59) {
